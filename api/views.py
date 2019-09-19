@@ -7,6 +7,8 @@ from rest_framework import status
 from django.core.files.storage import default_storage
 import os
 
+from django.conf import settings
+
 
 class Image(APIView):
 
@@ -14,6 +16,6 @@ class Image(APIView):
 
         img = request.FILES['image']
         img_extension = os.path.splitext(img.name)[-1]
-        default_storage.save(str(uuid.uuid4()) + img_extension, request.FILES['image'])
+        default_storage.save(settings.MEDIA_URL+str(uuid.uuid4()) + img_extension, request.FILES['image'])
 
         return Response({"you hit the view!!"}, status=status.HTTP_200_OK)
