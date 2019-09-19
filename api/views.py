@@ -18,4 +18,4 @@ class Image(APIView):
         img_extension = os.path.splitext(img.name)[-1]
         default_storage.save(settings.MEDIA_URL+str(uuid.uuid4()) + img_extension, request.FILES['image'])
 
-        return Response({"you hit the view!!"}, status=status.HTTP_200_OK)
+        return Response({"success":"accepted"}, status=status.HTTP_202_ACCEPTED)
