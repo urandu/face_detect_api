@@ -51,7 +51,7 @@ class Image(APIView):
     def post(self, request, *args, **kwargs):
 
         upload = upload_image(request=request)
-
-        return Response({"success":upload}, status=status.HTTP_202_ACCEPTED)
+        detected_faces = detect_faces(upload)
+        return Response({"success":detected_faces}, status=status.HTTP_202_ACCEPTED)
 
 
