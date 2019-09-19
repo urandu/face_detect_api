@@ -1,40 +1,10 @@
 version: '3'
 services:
-  database:
-      image: postgres:latest
-      volumes:
-          - ./db_data/pgdata:/var/lib/postgresql/data/
-      environment:
-          POSTGRES_USER: django
-      ports:
-        - "5432:5432"
 
-  broker:
-      image: rabbitmq:3.6.16-management-alpine #this has management plugin enabled
-      env_file: &envfile
-        - env.env
-      ports:
-        - 5672:5672
-        - 15688:15672
-        - 5671:5671
   webapp:
       build: .
       command: python manage.py runserver 0.0.0.0:8000
       volumes:
           - ./:/django
       ports:
-          - "8300:8000"
-
-  worker:
-      build: .
-      command: ["celery", "worker", "--app=apps.api.celery_app", "--concurrency=3", "--hostname=worker@%h", "--loglevel=INFO"]
-      volumes:
-          - ./:/django
-      links:
-          - database
-      env_file: *envfile
-      depends_on:
-        - broker
-        - redis
-        - database
-
+          - "8900:8000"
