@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+MEDIA_URL = './media/'
+########## END MEDIA CONFIGURATION
+
 
 # Application definition
 
