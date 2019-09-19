@@ -8,6 +8,7 @@ from django.core.files.storage import default_storage
 import os
 from mtcnn.mtcnn import MTCNN
 from numpy import asarray
+from PIL import Image as PImage
 
 from django.conf import settings
 
@@ -20,7 +21,7 @@ def upload_image(request):
 
 def detect_faces(image_path):
 
-    image = Image.open(default_storage.open(image_path))
+    image = PImage.open(default_storage.open(image_path))
     image = image.convert('RGB')
     pixels = asarray(image)
 
