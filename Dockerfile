@@ -6,7 +6,7 @@ MAINTAINER bildad namawa "bildadnamawa@gmail.com"
 RUN mkdir /django
 
 RUN apt-get -y update
-RUN apt-get install -y python python-pip python-dev python-psycopg2 postgresql-client
+RUN apt-get install -y python python-pip python-dev
 
 ADD requirements.txt /django/requirements.txt
 RUN pip install -r /django/requirements.txt
