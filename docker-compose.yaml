@@ -24,19 +24,6 @@ services:
           - ./:/django
       ports:
           - "8300:8000"
-      links:
-          - database
-      env_file: *envfile
-      depends_on:
-        - broker
-        - redis
-        - database
-  redis:
-      image: 'bitnami/redis:latest'
-      environment:
-        - ALLOW_EMPTY_PASSWORD=yes
-      ports:
-        - "6379:6379"
 
   worker:
       build: .
@@ -50,32 +37,4 @@ services:
         - broker
         - redis
         - database
-
-  flower:
-      image: zoomeranalytics/flower:0.9.1-4.0.2
-      restart: "no"
-      env_file: *envfile
-      ports:
-        - "5555:5555"
-      depends_on:
-        - broker
-  minio:
-        image: "minio/minio"
-        command: server /data
-        env_file: *envfile
-        ports:
-            - "9000:9000"
-        volumes:
-            - ./storage/minio:/data
-  tensorflow_serving:
-        image: tensorflow/serving
-        ports:
-            - "8501:8501"
-            - "8500:8500"
-        environment:
-            - MODEL_NAME=facenet
-        volumes:
-            - "./models/tensorflow/facenet:/models/facenet"
-
-
 
