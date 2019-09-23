@@ -23,3 +23,4 @@ tensorflow-estimator==1.14.0
 termcolor==1.1.0
 Werkzeug==0.16.0
 wrapt==1.11.2
+celery==4.2.0
