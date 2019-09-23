@@ -75,15 +75,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'face_detect_api.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+########## DATABASE CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.getenv('DATABASE_NAME', 'django'),
+        'USER': os.getenv('DATABASE_USER', 'django'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'django'),
+        'HOST': os.getenv('DATABASE_SERVICE_HOST', 'database'),
+        'PORT': os.getenv('DATABASE_SERVICE_PORT', 5432)
     }
 }
+########## END DATABASE CONFIGURATION
+
 
 
 # Password validation
