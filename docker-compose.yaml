@@ -41,7 +41,7 @@ services:
 
   worker:
       build: .
-      command: ["celery", "worker", "--app=apps.api.celery_app", "--concurrency=3", "--hostname=worker@%h", "--loglevel=INFO"]
+      command: ["celery", "worker", "--app=api.celery_app", "--concurrency=3", "--hostname=worker@%h", "--loglevel=INFO"]
       volumes:
           - ./:/django
       links:
