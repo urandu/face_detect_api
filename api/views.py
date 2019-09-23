@@ -50,7 +50,12 @@ def detect_faces(image_path):
 class Image(APIView):
 
     def post(self, request, *args, **kwargs):
-
+        image_id = str(uuid.uuid4())
+        name = upload(request, image_id)
+        image = Image()
+        image.image_id = image_id
+        image.name = name
+        image.save()
         upload = upload_image(request=request)
         detected_faces = detect_faces(upload)
         return Response({"success":detected_faces}, status=status.HTTP_202_ACCEPTED)
