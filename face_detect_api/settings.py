@@ -123,3 +123,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+
+CELERY = {
+    'BROKER_URL': os.environ['CELERY_BROKER'],
+    'CELERY_IMPORTS': ('apps.api.tasks', ),
+    'CELERY_TASK_SERIALIZER': 'json',
+    'CELERY_RESULT_BACKEND': os.environ['CELERY_RESULT_BACKEND'],
+    'CELERY_RESULT_SERIALIZER': 'json',
+    'CELERY_ACCEPT_CONTENT': ['json'],
+}
