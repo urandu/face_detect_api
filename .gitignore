@@ -113,3 +113,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 /gitwatch.sh
+
+# Celerybeat scheduler file:
+celerybeat-schedule
+ENV
+/db_data/
+/storage/
