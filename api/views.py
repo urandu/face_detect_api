@@ -54,8 +54,6 @@ class Image(APIView):
             image.name = name
             image.save()
 
-            detect_faces.s(image_id=image_id).delay()
-
             chain(
                 detect_faces.s(image_id=image_id)|
                 detect_faces_callback.s(image_id=image_id)
