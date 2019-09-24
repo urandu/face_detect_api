@@ -54,7 +54,7 @@ class Image(APIView):
             return Response({"status":default_storage.url(name)}, status=status.HTTP_202_ACCEPTED)
         else:
             if not request.POST.get("image", None):
-                return Response({"no_file_uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"`image` is required"}, status=status.HTTP_400_BAD_REQUEST)
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self,request):
