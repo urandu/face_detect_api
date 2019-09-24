@@ -3,8 +3,6 @@ import uuid
 
 from django.db import models
 
-import settings
-
 
 class Face(models.Model):
     image_id = models.CharField(max_length=100)
