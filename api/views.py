@@ -10,6 +10,13 @@ import os
 
 
 def upload_image(request, image_id):
+
+    # check if minio bucket exists
+    minioClient = Minio('your_hostname.sampledomain.com:9000',
+                        access_key='ACCESS_KEY',
+                        secret_key='SECRET_KEY',
+                        secure=True,
+                        http_client=httpClient)
     img = request.FILES['image']
     img_extension = os.path.splitext(img.name)[-1]
     return default_storage.save(image_id + img_extension, request.FILES['image'])
