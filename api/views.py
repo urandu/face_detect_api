@@ -9,9 +9,9 @@ import os
 
 
 def upload_image(request, image_id):
-    img = request.FILES['file']
+    img = request.FILES['image']
     img_extension = os.path.splitext(img.name)[-1]
-    return default_storage.save(image_id + img_extension, request.FILES['file'])
+    return default_storage.save(image_id + img_extension, request.FILES['image'])
 
 
 class Image(APIView):
