@@ -6,4 +6,4 @@ from api.models.image import Image
 class ImageSerializer(serializers.ModelSerializer):
     class Meta():
         model = Image
-        fields = ('image', 'image_id', 'callback_url', 'date_created')
+        fields = ('image_id', 'callback_url', 'date_created')
