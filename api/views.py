@@ -51,6 +51,6 @@ class Image(APIView):
 
             detect_faces.s(image_id=image_id).delay()
 
-            return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
+            return Response({"status":default_storage.url(name)}, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
