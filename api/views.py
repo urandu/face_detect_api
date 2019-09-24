@@ -81,5 +81,5 @@ class Image(APIView):
             response['Content-Disposition'] = 'attachment; filename="%s"' % filename
             return response
 
-            # return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
+            # return Response({"status": request.GET.get("image_id")},   status=status.HTTP_200_OK)
         pass
