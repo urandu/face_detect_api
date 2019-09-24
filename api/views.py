@@ -13,6 +13,7 @@ from minio.error import ResponseError
 from django.conf import settings
 from celery import chain
 import magic
+from django.http import HttpResponse
 
 
 
@@ -76,9 +77,9 @@ class Image(APIView):
             image = Image.open(default_storage.open(filename))
 
             content_type = magic.from_buffer(image, mime=True)
-            response = HttpResponse(image_buffer, content_type=content_type);
-            response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(image.file.path)
+            response = HttpResponse(image, content_type=content_type)
+            response['Content-Disposition'] = 'attachment; filename="%s"' % filename
             return response
 
-            return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
+            # return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
         pass
