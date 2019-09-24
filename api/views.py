@@ -7,6 +7,7 @@ from django.core.files.storage import default_storage
 from api.models.image import Image as Image_object
 from api.tasks.image import detect_faces
 import os
+from minio import Minio
 
 
 def upload_image(request, image_id):
