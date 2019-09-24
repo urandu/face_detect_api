@@ -6,11 +6,12 @@ from rest_framework import status
 from django.core.files.storage import default_storage
 from api.models.image import Image as Image_object
 from api.serializers.image_serializer import ImageSerializer
-from api.tasks.image import detect_faces
+from api.tasks.image import detect_faces, detect_faces_callback
 import os
 from minio import Minio
 from minio.error import ResponseError
 from django.conf import settings
+from celery import chain
 
 
 def upload_image(request, image_id):
@@ -50,6 +51,12 @@ class Image(APIView):
             image.save()
 
             detect_faces.s(image_id=image_id).delay()
+
+            chain(
+                detect_faces.s(image_id=image_id)|
+                detect_faces_callback.s(image_id=image_id)
+            ).delay()
+
 
             return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
         else:
