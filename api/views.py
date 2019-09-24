@@ -59,6 +59,6 @@ class Image(APIView):
 
     def get(self,request):
         if request.GET.get("image_id"):
-            
+
             return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
         pass
