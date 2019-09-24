@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import default_storage
+from api.tasks.image import detect_faces
 import os
 
 
@@ -22,6 +23,8 @@ class Image(APIView):
         image.image_id = image_id
         image.name = name
         image.save()
+
+        detect_faces.s(image_id=image_id).delay()
 
         return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
 
