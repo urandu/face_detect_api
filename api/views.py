@@ -14,6 +14,7 @@ from django.conf import settings
 from celery import chain
 
 
+
 def upload_image(request, image_id):
 
     # check if minio bucket exists
