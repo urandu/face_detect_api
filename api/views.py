@@ -38,11 +38,7 @@ def detect_faces(image_path):
             detected_faces.append({
                 "face_id":uuid.uuid4(),
                 "confidence": result['confidence'],
-                "bounding_box": result['box'],
-                "keypoints":result['keypoints']
-            })
-
-    return detected_faces
+                "bounding_box": resu
 
 
 
