@@ -3,7 +3,6 @@ import uuid
 
 from django.db import models
 
-import settings
 
 class Image(models.Model):
     image_id = models.CharField(max_length=100)
