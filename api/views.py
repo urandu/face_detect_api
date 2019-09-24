@@ -37,8 +37,7 @@ def detect_faces(image_path):
         if result['confidence'] > 0.90:
             detected_faces.append({
                 "face_id":uuid.uuid4(),
-                "confidence": result['confidence'],
-                "bounding_box": resu
+                "confidence": result['
 
 
 
