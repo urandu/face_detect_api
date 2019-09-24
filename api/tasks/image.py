@@ -39,3 +39,46 @@ def detect_faces(self, *args, **kwargs):
             detected_faces.append(face_id)
 
     return detected_faces
+
+
+
+@app.task(bind=True, name='detect_faces_callback')
+def detect_faces_callback(self, *args, **kwargs):
+    image_id = kwargs.get("image_id")
+    image_object = Image_object.objects.get(image_id=image_id)
+
+    filename = image_object.name
+    output_filename = "detected_faces/" + image_object.name
+    faces_on_image = Face.objects.filter(image_id=image_id)
+    image = PImage.open(default_storage.open(filename))
+    image = np.array(image)
+    # image = cv2.imread(default_storage.open(filename))
+    image = image.copy()
+    for face in faces_on_image:
+        classification = Classification.objects.get(face_id=face.face_id)
+        box = json.loads(face.box)
+
+        x1, y1, width, height = box
+        x1, y1 = abs(x1), abs(y1)
+        x2, y2 = x1 + width, y1 + height
+        cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 5)
+        cv2.putText(image,
+                    "P: " + "{0:.4f}".format(float(classification.probability)) + " ID:" + classification.cluster_id[
+                                                                                           :7],
+                    (x1, (y2 + 25)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
+
+    # cv2_im = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    pil_im = Image.fromarray(image)
+    silver_bullet = io.BytesIO()
+    pil_im.save(silver_bullet, format="JPEG")
+
+    image_file = InMemoryUploadedFile(silver_bullet, None, "nnnn.jpg", 'image/jpeg',
+                                      len(silver_bullet.getvalue()), None)
+
+    default_storage.save(output_filename, image_file)
+    # pil_im.save(default_storage.save(output_filename))
+    # cv2.imwrite(output_filename,
+    #             image)
+
+    return kwargs.get("image_id", "piladi ID returned because image ID missing")
