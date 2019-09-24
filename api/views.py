@@ -75,7 +75,7 @@ class Image(APIView):
 
             filename = "detected_faces/" + image_object.name
 
-            image = PImage.open(default_storage.open(filename))
+            image = default_storage.open(filename).read()
 
             content_type = magic.from_buffer(image, mime=True)
             response = HttpResponse(image, content_type=content_type)
