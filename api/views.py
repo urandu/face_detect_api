@@ -14,9 +14,9 @@ from django.conf import settings
 def upload_image(request, image_id):
 
     # check if minio bucket exists
-    minioClient = Minio('your_hostname.sampledomain.com:9000',
-                        access_key='ACCESS_KEY',
-                        secret_key='SECRET_KEY',
+    minioClient = Minio(settings.MINIO_STORAGE_ENDPOINT,
+                        access_key=settings.MINIO_STORAGE_ACCESS_KEY,
+                        secret_key=settings.MINIO_STORAGE_SECRET_KEY,
                         secure=False)
 
     img = request.FILES['image']
