@@ -17,7 +17,7 @@ from celery import chain
 
 def upload_image(request, image_id):
 
-    # check if minio bucket exists
+    # check if minio bucket exist
     minioClient = Minio(settings.MINIO_STORAGE_ENDPOINT,
                         access_key=settings.MINIO_STORAGE_ACCESS_KEY,
                         secret_key=settings.MINIO_STORAGE_SECRET_KEY,
