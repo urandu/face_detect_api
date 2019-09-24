@@ -5,14 +5,19 @@ from django.core.files.storage import default_storage
 import os
 from mtcnn.mtcnn import MTCNN
 from numpy import asarray
+from ..models.image import Image as Image_object
 from PIL import Image as PImage
+from api.celery_app import app
 
 from django.conf import settings
 
 
-def detect_faces(image_path):
-
-    image = PImage.open(default_storage.open(image_path))
+@app.task(bind=True, name='detect_faces')
+def detect_faces(self, *args,**kwargs):
+    image_id = kwargs.get("image_id")
+    image_object = Image_object.objects.get(image_id=image_id)
+    filename = image_object.name
+    image = PImage.open(default_storage.open(filename))
     image = image.convert('RGB')
     pixels = asarray(image)
 
