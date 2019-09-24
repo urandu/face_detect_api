@@ -9,6 +9,7 @@ from PIL import Image as PImage
 from api.celery_app import app
 import numpy as np
 import json
+import cv2
 
 
 @app.task(bind=True, name='detect_faces')
