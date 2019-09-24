@@ -18,20 +18,7 @@ def upload_image(request, image_id):
     img_extension = os.path.splitext(img.name)[-1]
     return default_storage.save(image_id + img_extension, request.FILES['file'])
 
-def detect_faces(image_path):
 
-    image = PImage.open(default_storage.open(image_path))
-    image = image.convert('RGB')
-    pixels = asarray(image)
-
-    detector = MTCNN()
-    # detect faces in the image
-
-    results = detector.detect_faces(pixels)
-
-    # extract the bounding box from the faces
-    detected_faces = list()
-    for result in re
 class Image(APIView):
 
     def post(self, request, *args, **kwargs):
