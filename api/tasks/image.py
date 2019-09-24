@@ -1,5 +1,7 @@
 # The future is now!
 import uuid
+
+import requests
 from django.core.files.storage import default_storage
 from mtcnn.mtcnn import MTCNN
 from numpy import asarray
@@ -90,7 +92,9 @@ def detect_faces_callback(self, *args, **kwargs):
         "image_id":image_id,
         "request_id":image_object.request_id,
         "faces":faces_dict,
-        "output_image":
+        "output_image_url":"{host}/api/image/?image_id={image_id}".format(host=settings.API_HOST, image_id=image_id)
     })
+
+    requests.post()
 
     return image_id
