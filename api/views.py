@@ -44,6 +44,7 @@ class Image(APIView):
             name = upload_image(request, image_id)
             image = Image_object()
             image.image_id = image_id
+            image.callback_url = callback_url
             image.name = name
             image.save()
 
