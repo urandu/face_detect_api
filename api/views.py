@@ -67,6 +67,18 @@ class Image(APIView):
 
     def get(self,request):
         if request.GET.get("image_id"):
+            image_id = request.GET.get("image_id")
+            image_object = Image_object.objects.get(image_id=image_id)
+
+            filename = image_object.name
+            filename = "detected_faces/" + image_object.name
+
+            image = Image.open(default_storage.open(filename))
+            
+            content_type = magic.from_buffer(image_buffer, mime=True)
+            response = HttpResponse(image_buffer, content_type=content_type);
+            response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(image.file.path)
+            return response
 
             return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
         pass
