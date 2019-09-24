@@ -4,7 +4,7 @@ from django.core.files.storage import default_storage
 from mtcnn.mtcnn import MTCNN
 from numpy import asarray
 from api.models.face import Face
-from ..models.image import Image as Image_object
+from api.models.image import Image as Image_object
 from PIL import Image as PImage
 from api.celery_app import app
 

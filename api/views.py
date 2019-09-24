@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import default_storage
+from api.models.image import Image as Image_object
 from api.tasks.image import detect_faces
 import os
 
@@ -19,7 +20,7 @@ class Image(APIView):
     def post(self, request, *args, **kwargs):
         image_id = str(uuid.uuid4())
         name = upload_image(request, image_id)
-        image = Image()
+        image = Image_object()
         image.image_id = image_id
         image.name = name
         image.save()
