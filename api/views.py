@@ -27,5 +27,3 @@ class Image(APIView):
         detect_faces.s(image_id=image_id).delay()
 
         return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
-
-
