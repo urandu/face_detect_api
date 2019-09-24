@@ -39,7 +39,7 @@ class Image(APIView):
 
     def post(self, request):
         image_serializer = ImageSerializer(data=request.data)
-        if image_serializer.is_valid() and request.POST.get("image", None):
+        if image_serializer.is_valid() and request.FILES.get("image", None):
             image_id = str(uuid.uuid4())
             request_id = request.data.get("request_id")
             callback_url = request.data.get("callback_url")
@@ -61,7 +61,7 @@ class Image(APIView):
 
             return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
         else:
-            if not request.POST.get("image", None):
+            if not request.FILES.get("image", None):
                 return Response({'`image` is required'}, status=status.HTTP_400_BAD_REQUEST)
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
