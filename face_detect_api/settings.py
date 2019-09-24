@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 CELERY = {
     'BROKER_URL': os.environ['CELERY_BROKER'],
-    'CELERY_IMPORTS': ('apps.api.tasks', ),
+    'CELERY_IMPORTS': ('api.tasks', ),
     'CELERY_TASK_SERIALIZER': 'json',
     'CELERY_RESULT_BACKEND': os.environ['CELERY_RESULT_BACKEND'],
     'CELERY_RESULT_SERIALIZER': 'json',
