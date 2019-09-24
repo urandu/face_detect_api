@@ -7,6 +7,7 @@ from api.models.face import Face
 from api.models.image import Image as Image_object
 from PIL import Image as PImage
 from api.celery_app import app
+import numpy as np
 
 
 @app.task(bind=True, name='detect_faces')
