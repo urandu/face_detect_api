@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import default_storage
 from api.models.image import Image as Image_object
+from api.serializers.image_serializer import ImageSerializer
 from api.tasks.image import detect_faces
 import os
 from minio import Minio
@@ -35,13 +36,18 @@ def upload_image(request, image_id):
 class Image(APIView):
 
     def post(self, request, *args, **kwargs):
-        image_id = str(uuid.uuid4())
-        name = upload_image(request, image_id)
-        image = Image_object()
-        image.image_id = image_id
-        image.name = name
-        image.save()
+        image_serializer = ImageSerializer(data=request.data)
+        if image_serializer.is_valid():
+            image_id = request.data.get("image_id")
+            callback_url = request.data.get("callback_url")
+            name = upload_image(request, image_id)
+            image = Image_object()
+            image.image_id = image_id
+            image.name = name
+            image.save()
 
-        detect_faces.s(image_id=image_id).delay()
+            detect_faces.s(image_id=image_id).delay()
 
-        return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
+            return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
