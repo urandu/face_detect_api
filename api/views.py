@@ -8,6 +8,7 @@ from api.models.image import Image as Image_object
 from api.tasks.image import detect_faces
 import os
 from minio import Minio
+from minio.error import ResponseError
 from django.conf import settings
 
 
@@ -22,6 +23,7 @@ def upload_image(request, image_id):
         print(minioClient.bucket_exists(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME))
     except ResponseError as err:
         print(err)
+        
 
 
     img = request.FILES['image']
