@@ -20,10 +20,11 @@ def upload_image(request, image_id):
                         secret_key=settings.MINIO_STORAGE_SECRET_KEY,
                         secure=False)
     try:
-        print(minioClient.bucket_exists(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME))
+        minioClient.bucket_exists(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME)
     except ResponseError as err:
-        print(err)
-        
+        # log then create bucket
+        minioClient.make_bucket(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME)
+
 
 
     img = request.FILES['image']
