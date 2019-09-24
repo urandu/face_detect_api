@@ -8,7 +8,7 @@ from api.models.image import Image as Image_object
 from PIL import Image as PImage
 from api.celery_app import app
 import numpy as np
-IMPORT
+import json
 
 
 @app.task(bind=True, name='detect_faces')
@@ -54,7 +54,6 @@ def detect_faces_callback(self, *args, **kwargs):
     faces_on_image = Face.objects.filter(image_id=image_id)
     image = PImage.open(default_storage.open(filename))
     image = np.array(image)
-    # image = cv2.imread(default_storage.open(filename))
     image = image.copy()
     for face in faces_on_image:
         box = json.loads(face.box)
