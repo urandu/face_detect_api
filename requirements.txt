@@ -24,3 +24,4 @@ termcolor==1.1.0
 Werkzeug==0.16.0
 wrapt==1.11.2
 celery==4.2.0
+psycopg2-binary==2.8.3
