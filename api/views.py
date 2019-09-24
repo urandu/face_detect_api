@@ -1,16 +1,10 @@
 # The future is now!
 import uuid
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import default_storage
 import os
-from mtcnn.mtcnn import MTCNN
-from numpy import asarray
-from PIL import Image as PImage
-
-from django.conf import settings
 
 
 def upload_image(request, image_id):
