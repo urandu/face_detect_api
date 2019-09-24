@@ -31,16 +31,7 @@ def detect_faces(image_path):
 
     # extract the bounding box from the faces
     detected_faces = list()
-    for result in results:
-
-        # only detect faces with a confidence of 90% and above
-        if result['confidence'] > 0.90:
-            detected_faces.append({
-                "face_id":uuid.uuid4(),
-                "confidence": result['
-
-
-
+    for result in re
 class Image(APIView):
 
     def post(self, request, *args, **kwargs):
