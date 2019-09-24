@@ -135,7 +135,7 @@ CELERY = {
     'BROKER_URL': os.environ['CELERY_BROKER'],
     'CELERY_IMPORTS': ('api.tasks', ),
     'CELERY_TASK_SERIALIZER': 'json',
-    'CELERY_RESULT_BACKEND': os.environ['CELERY_RESULT_BACKEND'],
+    # 'CELERY_RESULT_BACKEND': os.environ['CELERY_RESULT_BACKEND'],
     'CELERY_RESULT_SERIALIZER': 'json',
     'CELERY_ACCEPT_CONTENT': ['json'],
 }
