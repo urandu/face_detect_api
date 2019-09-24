@@ -55,7 +55,7 @@ class Image(APIView):
         else:
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self,request,*args,**kwargs):
-        if kwargs.get("image_id"):
-            return Response({"status": kwargs.get("image_id")}, status=status.HTTP_200_OK)
+    def get(self,request):
+        if request.GET.get("image_id"):
+            return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
         pass
