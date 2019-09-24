@@ -10,6 +10,9 @@ from api.celery_app import app
 import numpy as np
 import json
 import cv2
+import io
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.conf import settings
 
 
 @app.task(bind=True, name='detect_faces')
@@ -56,7 +59,13 @@ def detect_faces_callback(self, *args, **kwargs):
     image = PImage.open(default_storage.open(filename))
     image = np.array(image)
     image = image.copy()
+    faces_dict = list()
     for face in faces_on_image:
+        faces_dict.append({
+            "confidence":face.confidence,
+            "box":face.box,
+            "keypoints":face.keypoints
+        })
         box = json.loads(face.box)
 
         x1, y1, width, height = box
@@ -64,22 +73,24 @@ def detect_faces_callback(self, *args, **kwargs):
         x2, y2 = x1 + width, y1 + height
         cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 5)
         cv2.putText(image,
-                    "P: " + "{0:.4f}".format(float(classification.probability)) + " ID:" + classification.cluster_id[
-                                                                                           :7],
+                    "P: " + "{0:.4f}".format(float(face.confidence)),
                     (x1, (y2 + 25)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
 
-    # cv2_im = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    pil_im = Image.fromarray(image)
+    pil_im = PImage.fromarray(image)
     silver_bullet = io.BytesIO()
     pil_im.save(silver_bullet, format="JPEG")
 
-    image_file = InMemoryUploadedFile(silver_bullet, None, "nnnn.jpg", 'image/jpeg',
+    image_file = InMemoryUploadedFile(silver_bullet, None, output_filename, 'image/jpeg',
                                       len(silver_bullet.getvalue()), None)
 
     default_storage.save(output_filename, image_file)
-    # pil_im.save(default_storage.save(output_filename))
-    # cv2.imwrite(output_filename,
-    #             image)
 
-    return kwargs.get("image_id", "piladi ID returned because image ID missing")
+    callback = dict({
+        "image_id":image_id,
+        "request_id":image_object.request_id,
+        "faces":faces_dict,
+        "output_image":
+    })
+
+    return image_id
