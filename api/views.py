@@ -14,6 +14,7 @@ from django.conf import settings
 from celery import chain
 import magic
 from django.http import HttpResponse
+from PIL import Image as PImage
 
 
 
@@ -74,7 +75,7 @@ class Image(APIView):
 
             filename = "detected_faces/" + image_object.name
 
-            image = Image.open(default_storage.open(filename))
+            image = PImage.open(default_storage.open(filename))
 
             content_type = magic.from_buffer(image, mime=True)
             response = HttpResponse(image, content_type=content_type)
