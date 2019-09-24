@@ -8,6 +8,7 @@ from api.models.image import Image as Image_object
 from api.tasks.image import detect_faces
 import os
 from minio import Minio
+from django.conf import settings
 
 
 def upload_image(request, image_id):
@@ -16,8 +17,8 @@ def upload_image(request, image_id):
     minioClient = Minio('your_hostname.sampledomain.com:9000',
                         access_key='ACCESS_KEY',
                         secret_key='SECRET_KEY',
-                        secure=True,
-                        http_client=httpClient)
+                        secure=False)
+
     img = request.FILES['image']
     img_extension = os.path.splitext(img.name)[-1]
     return default_storage.save(image_id + img_extension, request.FILES['image'])
