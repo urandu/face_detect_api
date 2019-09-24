@@ -94,6 +94,9 @@ def detect_faces_callback(self, *args, **kwargs):
         "faces":faces_dict,
         "output_image_url":"{host}/api/image/?image_id={image_id}".format(host=settings.API_HOST, image_id=image_id)
     })
+    image_object.status = "completed"
+    image_object.save()
+
     try:
         requests.post(url=image_object.callback_url, data=json.dumps(callback))
     except Exception as e:
