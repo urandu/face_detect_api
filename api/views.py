@@ -18,6 +18,11 @@ def upload_image(request, image_id):
                         access_key=settings.MINIO_STORAGE_ACCESS_KEY,
                         secret_key=settings.MINIO_STORAGE_SECRET_KEY,
                         secure=False)
+    try:
+        print(minioClient.bucket_exists(settings.MINIO_STORAGE_SECRET_KEY))
+    except ResponseError as err:
+        print(err)
+
 
     img = request.FILES['image']
     img_extension = os.path.splitext(img.name)[-1]
