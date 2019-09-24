@@ -35,7 +35,6 @@ def upload_image(request, image_id):
 
 class Image(APIView):
 
-
     def post(self, request):
         image_serializer = ImageSerializer(data=request.data)
         if image_serializer.is_valid():
