@@ -51,7 +51,7 @@ class Image(APIView):
 
             detect_faces.s(image_id=image_id).delay()
 
-            return Response({"status":default_storage.url(name)}, status=status.HTTP_202_ACCEPTED)
+            return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
         else:
             if not request.POST.get("image", None):
                 return Response({'`image` is required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -59,5 +59,6 @@ class Image(APIView):
 
     def get(self,request):
         if request.GET.get("image_id"):
+            
             return Response({"status": request.GET.get("image_id")}, status=status.HTTP_200_OK)
         pass
