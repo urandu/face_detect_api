@@ -39,11 +39,13 @@ class Image(APIView):
     def post(self, request):
         image_serializer = ImageSerializer(data=request.data)
         if image_serializer.is_valid():
-            image_id = request.data.get("image_id")
+            image_id = 
+            request_id = request.data.get("request_id")
             callback_url = request.data.get("callback_url")
             name = upload_image(request, image_id)
             image = Image_object()
             image.image_id = image_id
+            image.request_id = request_id
             image.callback_url = callback_url
             image.name = name
             image.save()

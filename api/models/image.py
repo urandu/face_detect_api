@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Image(models.Model):
+    request_id = models.CharField(max_length=100)
     image_id = models.CharField(max_length=100)
     image_array = models.TextField(null= True)
     name = models.CharField(max_length=100)
