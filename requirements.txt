@@ -35,3 +35,5 @@ wrapt==1.11.2
 zipp==0.6.0
 django-minio-storage==0.2.2
 minio==4.0.21
+requests==2.22.0
+requests-oauthlib==1.2.0
