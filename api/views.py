@@ -54,3 +54,7 @@ class Image(APIView):
             return Response({"status":default_storage.url(name)}, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self,request):
+        
+        pass
