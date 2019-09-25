@@ -104,4 +104,4 @@ Below is an example image We used:
 ##### output image
 ![alt text](./docs/detected_faces_5003585c-9ca5-42f5-81d0-87193740e0a6.jpg "Architectural diagram")
 
-Please take a look at [this medium article](https://medium.com/@urandu/build-a-production-ready-face-detection-api-part-1-c56cbe9592bf) on how we developed the API 
+Please take a look at [this medium article](https://medium.com/@urandu/build-a-production-ready-face-detection-api-part-1-c56cbe9592bf "Build a Production Ready Face Detection API") on how we developed the API 
