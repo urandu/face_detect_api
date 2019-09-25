@@ -28,13 +28,22 @@ To deploy the API locally, run the following commands
 - Then run `docker-compose run api python manage.py migrate`
 - (Optional) create superuser by running `docker-compose run api python manage.py createsuperuser` you will be prompted for a username, email and password. these are the admin credentials for django admin
 
-To test our API, we shall send a post request to the endpoint `http://localhost:8900/api/image/`
+- To test our API, we shall send a post request to the endpoint `http://localhost:8900/api/image/`
 
  ```
 curl -i -X POST -H "Content-Type: multipart/form-data" 
 -F "request_id=12345" -F "callback_url=<replace with requestbin.com endpoint>" -F "image=<path to image>" http://localhost:8900/api/image/
 
 ```
+- callback response
+```
+
+
+```
+
 
 Below is an example image We used:
 #####input image
+![alt text](./docs/face detect api.png "Architectural diagram")
+#####output image
+![alt text](./docs/face detect api.png "Architectural diagram")
