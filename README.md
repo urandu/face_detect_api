@@ -15,3 +15,9 @@ the technologies used include:
 The architecture used is a micro-service architecture with asynchronous processing of requests.
 The diagram below highlights the architecture used;
 
+![alt text](./docs/face detect api.png "Architectural diagram")
+
+##Local Deployment
+
+To deploy the API locally, run the following commands
+- clone this repo `git clone `
