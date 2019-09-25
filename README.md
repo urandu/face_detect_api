@@ -20,8 +20,11 @@ The diagram below highlights the architecture used;
 ##Local Deployment
 
 To deploy the API locally, run the following commands
-- clone this repo `git clone https://github.com/urandu/face_detect_api.git`
+- Clone this repo `git clone https://github.com/urandu/face_detect_api.git`
 - `cd fac_detect_api`
-- run `docker-compose up `
-- wait for the necessary docker images to be pulled and started
-- on a different terminal, run ``
+- Run `docker-compose up `
+- Wait for the necessary docker images to be pulled and started
+- On a different terminal, run `docker-compose run api python manage.py makemigrations`
+- Then run `docker-compose run api python manage.py migrate`
+- (Optional) create superuser by running `docker-compose run api python manage.py createsuperuser` you will be prompted for a username, email and password. these are the admin credentials for django admin
+
