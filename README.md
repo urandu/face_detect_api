@@ -14,3 +14,4 @@ the technologies used include:
 
 The architecture used is a micro-service architecture with asynchronous processing of requests.
 The diagram below highlights the architecture used;
+
