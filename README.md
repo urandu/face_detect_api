@@ -37,51 +37,63 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
 ```
 - callback response
 ```
-"root":
-"image_id": "0a5a49c6-18dc-4b3a-b984-70476280aa13"
-"request_id": "123456789"
-"faces":
-0:
-"confidence": "0.9999778270721436"
-"box": "[205, 130, 34, 44]"
-"keypoints": "{'left_eye': (216, 146), 'right_eye': (233, 148), 'nose': (224, 157), 'mouth_left': (216, 165), 'mouth_right': (230, 166)}"
-1:
-"confidence": "0.9999626874923706"
-"box": "[652, 132, 35, 43]"
-"keypoints": "{'left_eye': (662, 151), 'right_eye': (678, 148), 'nose': (670, 156), 'mouth_left': (666, 167), 'mouth_right': (679, 165)}"
-2:
-"confidence": "0.9999274015426636"
-"box": "[564, 338, 38, 45]"
-"keypoints": "{'left_eye': (576, 355), 'right_eye': (595, 355), 'nose': (586, 364), 'mouth_left': (577, 374), 'mouth_right': (593, 374)}"
-3:
-"confidence": "0.9998524188995361"
-"box": "[491, 154, 31, 40]"
-"keypoints": "{'left_eye': (501, 170), 'right_eye': (516, 170), 'nose': (509, 177), 'mouth_left': (502, 186), 'mouth_right': (515, 186)}"
-4:
-"confidence": "0.9997138381004333"
-"box": "[294, 253, 33, 41]"
-"keypoints": "{'left_eye': (303, 269), 'right_eye': (319, 267), 'nose': (310, 277), 'mouth_left': (304, 285), 'mouth_right': (319, 284)}"
-5:
-"confidence": "0.9995110034942627"
-"box": "[293, 134, 34, 45]"
-"keypoints": "{'left_eye': (304, 150), 'right_eye': (321, 151), 'nose': (313, 161), 'mouth_left': (305, 168), 'mouth_right': (320, 169)}"
-6:
-"confidence": "0.999414324760437"
-"box": "[406, 69, 33, 40]"
-"keypoints": "{'left_eye': (414, 83), 'right_eye': (431, 82), 'nose': (423, 89), 'mouth_left': (417, 100), 'mouth_right': (431, 99)}"
-7:
-"confidence": "0.9993127584457397"
-"box": "[418, 246, 40, 51]"
-"keypoints": "{'left_eye': (429, 265), 'right_eye': (449, 266), 'nose': (438, 275), 'mouth_left': (430, 286), 'mouth_right': (446, 287)}"
-8:
-"confidence": "0.9989363551139832"
-"box": "[733, 160, 40, 51]"
-"keypoints": "{'left_eye': (743, 180), 'right_eye': (763, 180), 'nose': (751, 189), 'mouth_left': (744, 200), 'mouth_right': (761, 200)}"
-9:
-"confidence": "0.995890200138092"
-"box": "[575, 248, 31, 39]"
-"keypoints": "{'left_eye': (585, 262), 'right_eye': (601, 262), 'nose': (593, 269), 'mouth_left': (585, 277), 'mouth_right': (598, 278)}"
-"output_image_url": "localhost:8900/api/image/?image_id=0a5a49c6-18dc-4b3a-b984-70476280aa13"
+{
+    "image_id": "0a5a49c6-18dc-4b3a-b984-70476280aa13",
+    "request_id": "123456789",
+    "faces": [
+        {
+            "confidence": "0.9999778270721436",
+            "box": "[205, 130, 34, 44]",
+            "keypoints": "{'left_eye': (216, 146), 'right_eye': (233, 148), 'nose': (224, 157), 'mouth_left': (216, 165), 'mouth_right': (230, 166)}"
+        },
+        {
+            "confidence": "0.9999626874923706",
+            "box": "[652, 132, 35, 43]",
+            "keypoints": "{'left_eye': (662, 151), 'right_eye': (678, 148), 'nose': (670, 156), 'mouth_left': (666, 167), 'mouth_right': (679, 165)}"
+        },
+        {
+            "confidence": "0.9999274015426636",
+            "box": "[564, 338, 38, 45]",
+            "keypoints": "{'left_eye': (576, 355), 'right_eye': (595, 355), 'nose': (586, 364), 'mouth_left': (577, 374), 'mouth_right': (593, 374)}"
+        },
+        {
+            "confidence": "0.9998524188995361",
+            "box": "[491, 154, 31, 40]",
+            "keypoints": "{'left_eye': (501, 170), 'right_eye': (516, 170), 'nose': (509, 177), 'mouth_left': (502, 186), 'mouth_right': (515, 186)}"
+        },
+        {
+            "confidence": "0.9997138381004333",
+            "box": "[294, 253, 33, 41]",
+            "keypoints": "{'left_eye': (303, 269), 'right_eye': (319, 267), 'nose': (310, 277), 'mouth_left': (304, 285), 'mouth_right': (319, 284)}"
+        },
+        {
+            "confidence": "0.9995110034942627",
+            "box": "[293, 134, 34, 45]",
+            "keypoints": "{'left_eye': (304, 150), 'right_eye': (321, 151), 'nose': (313, 161), 'mouth_left': (305, 168), 'mouth_right': (320, 169)}"
+        },
+        {
+            "confidence": "0.999414324760437",
+            "box": "[406, 69, 33, 40]",
+            "keypoints": "{'left_eye': (414, 83), 'right_eye': (431, 82), 'nose': (423, 89), 'mouth_left': (417, 100), 'mouth_right': (431, 99)}"
+        },
+        {
+            "confidence": "0.9993127584457397",
+            "box": "[418, 246, 40, 51]",
+            "keypoints": "{'left_eye': (429, 265), 'right_eye': (449, 266), 'nose': (438, 275), 'mouth_left': (430, 286), 'mouth_right': (446, 287)}"
+        },
+        {
+            "confidence": "0.9989363551139832",
+            "box": "[733, 160, 40, 51]",
+            "keypoints": "{'left_eye': (743, 180), 'right_eye': (763, 180), 'nose': (751, 189), 'mouth_left': (744, 200), 'mouth_right': (761, 200)}"
+        },
+        {
+            "confidence": "0.995890200138092",
+            "box": "[575, 248, 31, 39]",
+            "keypoints": "{'left_eye': (585, 262), 'right_eye': (601, 262), 'nose': (593, 269), 'mouth_left': (585, 277), 'mouth_right': (598, 278)}"
+        }
+    ],
+    "output_image_url": "localhost:8900/api/image/?image_id=0a5a49c6-18dc-4b3a-b984-70476280aa13"
+}
 
 ```
 
