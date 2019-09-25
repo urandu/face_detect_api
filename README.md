@@ -1,4 +1,4 @@
-#Face Detect API
+# Face Detect API
 This is a simple face detection api that takes as input, an image and gives as output, detected faces on the image. This API can be used as an alternative to the paid face detection APIs currently available as it gives quite good accuracy levels.
 the technologies used include: 
 - Django
@@ -10,14 +10,14 @@ the technologies used include:
 - Redis
 - Celery
 
-##Architecture
+## Architecture
 
 The architecture used is a micro-service architecture with asynchronous processing of requests.
 The diagram below highlights the architecture used;
 
-![alt text](./docs/face detect api.png "Architectural diagram")
+![alt text](./docs/face_detect_api.png "Architectural diagram")
 
-##Local Deployment
+## Local Deployment
 
 To deploy the API locally, run the following commands
 - Clone this repo `git clone https://github.com/urandu/face_detect_api.git`
