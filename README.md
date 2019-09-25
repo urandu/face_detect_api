@@ -20,4 +20,8 @@ The diagram below highlights the architecture used;
 ##Local Deployment
 
 To deploy the API locally, run the following commands
-- clone this repo `git clone `
+- clone this repo `git clone https://github.com/urandu/face_detect_api.git`
+- `cd fac_detect_api`
+- run `docker-compose up `
+- wait for the necessary docker images to be pulled and started
+- on a different terminal, run ``
