@@ -7,3 +7,10 @@ the technologies used include:
 - Minio
 - PostgreSQL
 - RabbitMQ
+- Redis
+- Celery
+
+##Architecture
+
+The architecture used is a micro-service architecture with asynchronous processing of requests.
+The diagram below highlights the architecture used;
