@@ -100,6 +100,6 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
 
 Below is an example image We used:
 #####input image
-![alt text](./docs/face detect api.png "Architectural diagram")
+![alt text](./docs/299510_286698748013512_621328646_n.jpg "Architectural diagram")
 #####output image
-![alt text](./docs/face detect api.png "Architectural diagram")
+![alt text](./docs/detected_faces_5003585c-9ca5-42f5-81d0-87193740e0a6.jpg "Architectural diagram")
