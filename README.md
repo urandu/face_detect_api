@@ -99,7 +99,7 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
 ```
 
 
-Below is an example image we used:
+Below is an example image we used: 
 ##### input image
 ![alt text](./docs/299510_286698748013512_621328646_n.jpg "Architectural diagram")
 ##### output image
