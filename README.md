@@ -1,4 +1,5 @@
-# Face Detect API
+[![Maintainability](https://api.codeclimate.com/v1/badges/380feac518441fb3b9ff/maintainability)](https://codeclimate.com/github/urandu/face_detect_api/maintainability)
+#Face Detect API
 This is a simple face detection api that takes as input, an image and gives as output, detected faces on the image. This API can be used as an alternative to the paid face detection APIs currently available as it gives quite good accuracy levels.
 the technologies used include: 
 - Django
