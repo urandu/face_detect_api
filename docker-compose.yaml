@@ -24,7 +24,6 @@ services:
         - redis
         - database
 
-
   broker:
       image: rabbitmq:3.6.16-management-alpine
       env_file: *envfile
