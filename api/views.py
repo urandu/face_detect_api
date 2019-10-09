@@ -59,7 +59,6 @@ class Image(APIView):
                 detect_faces_callback.s(image_id=image_id)
             ).delay()
 
-
             return Response({"status":"ok"}, status=status.HTTP_202_ACCEPTED)
         else:
             if not request.FILES.get("image", None):

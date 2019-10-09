@@ -8,15 +8,15 @@ services:
       environment:
           POSTGRES_USER: django
       ports:
-        - "5432:5432"
+        - "5432"
 
   api:
       build: .
       command: python manage.py runserver 0.0.0.0:8000
       volumes:
-          - ./:/django
+          - /Users/bildad.namawa/sandbox/face_detect_api/:/django
       ports:
-          - "8900:8000"
+          - "8000"
       env_file: &envfile
         - env.env
       depends_on:
@@ -29,22 +29,22 @@ services:
       image: rabbitmq:3.6.16-management-alpine
       env_file: *envfile
       ports:
-        - 5672:5672
-        - 15688:15672
-        - 5671:5671
+        - 5672
+        - 15672
+        - 5671
 
   redis:
       image: 'bitnami/redis:latest'
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
       ports:
-        - "6379:6379"
+        - "6379"
 
   worker:
       build: .
       command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
       volumes:
-          - ./:/django
+          - /Users/bildad.namawa/sandbox/face_detect_api/:/django
       links:
           - database
       env_file: *envfile
@@ -58,6 +58,6 @@ services:
         command: server /data
         env_file: *envfile
         ports:
-            - "9000:9000"
+            - "9000"
         volumes:
             - ./storage/minio:/data
