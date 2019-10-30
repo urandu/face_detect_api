@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'minio_storage',
     'api',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
