@@ -22,7 +22,7 @@ The diagram below highlights the architecture used;
 
 To deploy the API locally, run the following commands
 - Clone this repo `git clone https://github.com/urandu/face_detect_api.git`
-- `cd fac_detect_api`
+- `cd face_detect_api`
 - Run `docker-compose up `
 - Wait for the necessary docker images to be pulled and started
 - On a different terminal, run `docker-compose run api python manage.py makemigrations`
