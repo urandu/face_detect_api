@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: api
-          image: gitumarkk/k8_django_minikube:1.0.5
+          image: urandu/face-detection-api:latest
           ports:
             - containerPort: 8000
