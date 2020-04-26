@@ -1,0 +1,20 @@
+apiVersion: v1
+metadata:
+  name: django
+  labels:
+    app: django
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: gitumarkk/k8_django_minikube:1.0.5
+          ports:
+            - containerPort: 8000
