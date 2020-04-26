@@ -13,7 +13,7 @@ spec:
         tier: backend
     spec:
       containers:
-        - name: postgres-container
+        - name: postgres
           image: postgres:11.4
           env:
             - name: POSTGRES_USER
