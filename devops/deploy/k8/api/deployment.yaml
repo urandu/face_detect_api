@@ -17,6 +17,7 @@ spec:
       containers:
         - name: api
           image: urandu/face-detection-api:latest
+          args: ["gunicorn", "-b :8000", "django.wsgi"]
           ports:
             - containerPort: 8000
           env:
