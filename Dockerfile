@@ -5,6 +5,8 @@ MAINTAINER bildad namawa "bildadnamawa@gmail.com"
 
 RUN mkdir /django
 
+COPY . /django
+
 RUN apt-get -y update
 RUN apt-get install -y python python-pip python-dev
 
