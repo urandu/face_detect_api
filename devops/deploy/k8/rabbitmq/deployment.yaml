@@ -28,6 +28,13 @@ spec:
 
         env:
           - name: RABBITMQ_DEFAULT_USER
-            - value: user
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-credentials
+                key: user
+
           - name: RABBITMQ_DEFAULT_PASS
-            - value: weak_password
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-credentials
+                key: password

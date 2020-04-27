@@ -44,5 +44,14 @@ spec:
                   name: postgres-credentials
                   key: db_host
 
+            - name: CELERY_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: host
+
+            - name: CELERY_RESULT_BACKEND
+              value: redis-service
+
             - name: REDIS_HOST
               value: redis-service
