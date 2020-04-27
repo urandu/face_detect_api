@@ -1,23 +1,24 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: celery-worker
+  name: worker
   labels:
-    deployment: celery-worker
+    deployment: worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      pod: celery-worker
+      pod: worker
   template:
     metadata:
       labels:
-        pod: celery-worker
+        pod: worker
     spec:
       containers:
-        - name: celery-worker
-          image: gitumarkk/k8_django_minikube:part_4
+        - name: worker
+          image: urandu/face-detection-api:latest
           command: ['celery', '-A', 'kubernetes_django', 'worker', '-l', 'info']
+          command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
           env:
             - name: POSTGRES_USER
               valueFrom:
