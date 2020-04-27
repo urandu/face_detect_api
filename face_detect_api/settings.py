@@ -25,7 +25,7 @@ SECRET_KEY = 'h9t*1#8g^k%6s69^@zdm7m*jtq&z!43a!x8h&!gtep#6#7q!+1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [gethostname(), gethostbyname(gethostname()), "192.168.*.*", "localhost", "127.0.0.1" ]
+ALLOWED_HOSTS = ["192.168.100.3", gethostname(), gethostbyname(gethostname()), "192.168.*.*", "localhost", "127.0.0.1" ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = './media/'
