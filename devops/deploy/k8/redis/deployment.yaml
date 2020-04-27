@@ -18,6 +18,3 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 6379
-          env:
-            - name: ALLOW_EMPTY_PASSWORD
-              value: yes
