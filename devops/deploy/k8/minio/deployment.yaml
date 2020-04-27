@@ -16,8 +16,7 @@ spec:
       containers:
         - name: minio
           image: "minio/minio"
-          command:
-            - "server /data"
+          args: ["server", "/data"]
           env:
             - name: MINIO_ACCESS_KEY
               valueFrom:

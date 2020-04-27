@@ -13,7 +13,7 @@ services:
 
   api:
       build: .
-      command: .
+      command: ./bin/web_entrypoint.sh
       volumes:
           - ./ :/django
       ports:
@@ -42,7 +42,7 @@ services:
 
   worker:
       build: .
-      command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
+      command: ./bin/worker_entrypoint.sh
       volumes:
           - ./ :/django
       links:
