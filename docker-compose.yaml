@@ -12,7 +12,7 @@ services:
         - "5432"
 
   api:
-      build: .
+      image: urandu/face-detection-api:a0fbc99c1862c39997e43252b1bac21ef6cfad00
       command: ./bin/web_entrypoint.sh
       volumes:
           - ./:/django
@@ -41,7 +41,7 @@ services:
         - "6379"
 
   worker:
-      build: .
+      image: urandu/face-detection-api:a0fbc99c1862c39997e43252b1bac21ef6cfad00
       command: ./bin/worker_entrypoint.sh
       volumes:
           - ./:/django
