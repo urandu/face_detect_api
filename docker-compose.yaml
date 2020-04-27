@@ -15,7 +15,7 @@ services:
       build: .
       command: ./bin/web_entrypoint.sh
       volumes:
-          - ./ :/django
+          - ./:/django
       ports:
           - "8900:8000"
       env_file: &envfile
@@ -44,7 +44,7 @@ services:
       build: .
       command: ./bin/worker_entrypoint.sh
       volumes:
-          - ./ :/django
+          - ./:/django
       links:
           - database
       env_file: *envfile
