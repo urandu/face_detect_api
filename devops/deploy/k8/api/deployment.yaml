@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: urandu/face-detection-api:a0fbc99c1862c39997e43252b1bac21ef6cfad00
+          image: urandu/face-detection-api:a1aff1aca6699d6934f3641aee1f3c45e7b0b773
           args: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
           ports:
             - containerPort: 8000
