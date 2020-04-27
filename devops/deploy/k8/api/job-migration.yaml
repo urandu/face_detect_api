@@ -10,19 +10,19 @@ spec:
           image: urandu/face-detection-api:latest
           command: ['python', 'manage.py', 'migrate']
           env:
-            - name: POSTGRES_USER
+            - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: user
 
-            - name: POSTGRES_PASSWORD
+            - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: password
 
-            - name: POSTGRES_DB
+            - name: DATABASE_NAME
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
@@ -33,6 +33,37 @@ spec:
                 secretKeyRef:
                   name: postgres-credentials
                   key: db_host
+
+            - name: CELERY_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: host
+
+            - name: CELERY_RESULT_BACKEND
+              value: redis://redis-service:6379
+
+            - name: API_HOST
+              value: http://localhost:8900
+
+            - name: REDIS_HOST
+              value: redis-service
+
+            - name: MINIO_STORAGE_ENDPOINT
+              value: minio-service:9000
+
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: access_key
+
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secret_key
+
 
       restartPolicy: Never
   backoffLimit: 5
