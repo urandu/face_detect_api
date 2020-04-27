@@ -15,4 +15,3 @@ spec:
   - protocol: TCP
     port: 5671
     targetPort: 5671
-  type: NodePort
