@@ -18,36 +18,23 @@ spec:
           image: minio/minio
           command: ["server", " /data"]
           env:
-            - name: POSTGRES_USER
+            - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
-                  key: user
+                  name: minio-credentials
+                  key: access_key
 
-            - name: POSTGRES_PASSWORD
+            - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
-                  key: password
-
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-credentials
-                  key: db_name
-
-
-
-                  MINIO_STORAGE_ENDPOINT=minio:9000
-                  MINIO_ACCESS_KEY=weak_password
-                  MINIO_SECRET_KEY=weak_password
-
+                  name: minio-credentials
+                  key: secret_key
 
           ports:
             - containerPort: 9000
           volumeMounts:
             - name: minio-volume-mount
-              mountPath: /var/lib/postgresql/data
+              mountPath: /data
 
       volumes:
         - name: minio-volume-mount

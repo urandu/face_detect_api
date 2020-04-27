@@ -1,14 +1,14 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv
+  name: minio-pv
   labels:
     type: local
 spec:
   capacity:
-    storage: 2Gi
+    storage: 5Gi
   storageClassName: manual
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/postgres-pv
+    path: /data/minio-pv

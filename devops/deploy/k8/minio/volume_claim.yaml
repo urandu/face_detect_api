@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: postgres-pvc
+  name: minio-pvc
   labels:
     type: local
 spec:
@@ -10,5 +10,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 2Gi
-  volumeName: postgres-pv
+      storage: 5Gi
+  volumeName: minio-pv

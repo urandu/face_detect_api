@@ -52,5 +52,23 @@ spec:
             - name: CELERY_RESULT_BACKEND
               value: redis://redis-service:6379
 
+            - name: API_HOST
+              value: http://localhost:8900
+
             - name: REDIS_HOST
               value: redis-service
+
+            - name: MINIO_STORAGE_ENDPOINT
+              value: minio-service:9000
+
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: access_key
+
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secret_key
