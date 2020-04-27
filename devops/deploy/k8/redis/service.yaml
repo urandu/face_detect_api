@@ -4,7 +4,7 @@ metadata:
   name: redis-service
 spec:
   selector:
-    pod: redis
+    app: redis
   ports:
   - protocol: TCP
     port: 6379
