@@ -6,12 +6,15 @@ spec:
   selector:
     pod: rabbitmq
   ports:
-  - protocol: TCP
+  - name: port-1
+    protocol: TCP
     port: 5672
     targetPort: 5672
-  - protocol: TCP
+  - name: port-2
+    protocol: TCP
     port: 15672
     targetPort: 15672
-  - protocol: TCP
+  - name: port-3
+    protocol: TCP
     port: 5671
     targetPort: 5671
