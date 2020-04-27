@@ -37,5 +37,8 @@ spec:
                   name: postgres-credentials
                   key: db_name
 
-            - name: POSTGRES_HOST
-              value: postgres-service
+            - name: DATABASE_SERVICE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_host
