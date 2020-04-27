@@ -15,7 +15,7 @@ services:
       build: .
       command: python manage.py runserver 0.0.0.0:8000
       volumes:
-          - /Users/bildad.namawa/sandbox/face_detect_api/:/django
+          - ./:/django
       ports:
           - "8900:8000"
       env_file: &envfile
@@ -44,7 +44,7 @@ services:
       build: .
       command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
       volumes:
-          - /Users/bildad.namawa/sandbox/face_detect_api/:/django
+          - ./:/django
       links:
           - database
       env_file: *envfile
