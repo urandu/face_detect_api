@@ -43,3 +43,6 @@ spec:
                 secretKeyRef:
                   name: postgres-credentials
                   key: db_host
+                  
+            - name: REDIS_HOST
+              value: redis-service

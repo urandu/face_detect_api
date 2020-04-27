@@ -17,7 +17,6 @@ spec:
       containers:
         - name: worker
           image: urandu/face-detection-api:latest
-          command: ['celery', '-A', 'kubernetes_django', 'worker', '-l', 'info']
           command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
           env:
             - name: POSTGRES_USER
@@ -32,8 +31,17 @@ spec:
                   name: postgres-credentials
                   key: password
 
-            - name: POSTGRES_HOST
-              value: postgres-service
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_name
+
+            - name: DATABASE_SERVICE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_host
 
             - name: REDIS_HOST
               value: redis-service
