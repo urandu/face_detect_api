@@ -1,28 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
-  labels:
-    deployment: redis
+  name: redis-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: redis
-  replicas: 1
   template:
     metadata:
       labels:
         app: redis
     spec:
       containers:
-      - name: redis
-        image: bitnami/redis:latest
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        ports:
-        - containerPort: 6379
-        env:
-          - name: ALLOW_EMPTY_PASSWORD
-            value: yes
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6379
