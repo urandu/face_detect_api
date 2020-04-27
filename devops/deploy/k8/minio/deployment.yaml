@@ -17,7 +17,7 @@ spec:
         - name: minio
           image: "minio/minio"
           command:
-            - server /data
+            - "server /data"
           env:
             - name: MINIO_ACCESS_KEY
               valueFrom:
