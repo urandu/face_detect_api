@@ -1,28 +1,33 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: redis
+  name: rabbitmq
   labels:
-    deployment: redis
+    deployment: rabbitmq
 spec:
   selector:
     matchLabels:
-      pod: redis
+      pod: rabbitmq
   replicas: 1
   template:
     metadata:
       labels:
-        pod: redis
+        pod: rabbitmq
     spec:
       containers:
-      - name: master
-        image: bitnami/redis:latest
+      - name: rabbitmq
+        image: rabbitmq:3.6.16-management-alpine
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
         ports:
-        - containerPort: 6379
+        - containerPort: 5672
+        - containerPort: 15672
+        - containerPort: 5671
+
         env:
-          - name: ALLOW_EMPTY_PASSWORD
-            - value: yes
+          - name: RABBITMQ_DEFAULT_USER
+            - value: user
+          - name: RABBITMQ_DEFAULT_PASS
+            - value: weak_password

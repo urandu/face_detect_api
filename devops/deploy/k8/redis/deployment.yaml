@@ -15,7 +15,7 @@ spec:
         pod: redis
     spec:
       containers:
-      - name: master
+      - name: redis
         image: bitnami/redis:latest
         resources:
           requests:
