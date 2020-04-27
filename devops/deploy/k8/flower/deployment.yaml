@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flower
+  labels:
+    deployment: flower
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: flower
+  template:
+    metadata:
+      labels:
+        pod: flower
+    spec:
+      containers:
+      - name: flower
+        image: zoomeranalytics/flower:0.9.1-4.0.2
+        ports:
+          - containerPort: 5555
+        env:
+            - name: FLOWER_BROKER
+              value: rabbitmq-service
+        resources:
+          limits:
+            cpu: 100m

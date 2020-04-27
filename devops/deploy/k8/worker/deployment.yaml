@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  labels:
+    deployment: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: worker
+  template:
+    metadata:
+      labels:
+        pod: worker
+    spec:
+      containers:
+        - name: worker
+          image: urandu/face-detection-api:latest
+          args: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
+          env:
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: user
+
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_name
+
+            - name: DATABASE_SERVICE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_host
+
+            - name: CELERY_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: host
+
+            - name: CELERY_RESULT_BACKEND
+              value: redis://redis-service:6379
+
+            - name: API_HOST
+              value: http://localhost:8900
+
+            - name: REDIS_HOST
+              value: redis-service
+
+            - name: MINIO_STORAGE_ENDPOINT
+              value: minio-service:9000
+
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: access_key
+
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secret_key

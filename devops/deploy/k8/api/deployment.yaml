@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: urandu/face-detection-api:latest
+          args: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: user
+
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_name
+
+            - name: DATABASE_SERVICE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: db_host
+
+            - name: CELERY_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: host
+
+            - name: CELERY_RESULT_BACKEND
+              value: redis://redis-service:6379
+
+            - name: API_HOST
+              value: http://localhost:8900
+#SET DEBUG TO TRUE FOR TESTING
+            - name: DEBUG
+              value: "True"
+
+            - name: REDIS_HOST
+              value: redis-service
+
+            - name: MINIO_STORAGE_ENDPOINT
+              value: minio-service:9000
+
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: access_key
+
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secret_key

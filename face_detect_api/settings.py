@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from socket import gethostname, gethostbyname
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +25,7 @@ SECRET_KEY = 'h9t*1#8g^k%6s69^@zdm7m*jtq&z!43a!x8h&!gtep#6#7q!+1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [gethostname(), gethostbyname(gethostname()), ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = './media/'
@@ -135,19 +135,19 @@ STATIC_URL = '/static/'
 
 
 CELERY = {
-    'BROKER_URL': os.environ['CELERY_BROKER'],
+    'BROKER_URL': os.getenv('CELERY_BROKER'),
     'CELERY_IMPORTS': ('api.tasks', ),
     'CELERY_TASK_SERIALIZER': 'json',
-    'CELERY_RESULT_BACKEND': os.environ['CELERY_RESULT_BACKEND'],
+    'CELERY_RESULT_BACKEND': os.getenv('CELERY_RESULT_BACKEND'),
     'CELERY_RESULT_SERIALIZER': 'json',
     'CELERY_ACCEPT_CONTENT': ['json'],
 }
 
 DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
 # STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
-MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_ACCESS_KEY')
-MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_SECRET_KEY')
-MINIO_STORAGE_ENDPOINT = os.environ.get('MINIO_STORAGE_ENDPOINT')
+MINIO_STORAGE_ACCESS_KEY = os.getenv('MINIO_ACCESS_KEY')
+MINIO_STORAGE_SECRET_KEY = os.getenv('MINIO_SECRET_KEY')
+MINIO_STORAGE_ENDPOINT = os.getenv('MINIO_STORAGE_ENDPOINT')
 MINIO_STORAGE_USE_HTTPS = False
 MINIO_STORAGE_MEDIA_BUCKET_NAME = "media"
 MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  labels:
+    deployment: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      pod: rabbitmq
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        pod: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3.6.16-management-alpine
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+        - containerPort: 5671
+
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-credentials
+                key: user
+
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-credentials
+                key: password
