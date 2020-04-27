@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: urandu/face-detection-api:e0baf954180cc37af97d7ae0f8e40bc8bd67d223
+          image: urandu/face-detection-api:a0fbc99c1862c39997e43252b1bac21ef6cfad00
           args: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
           env:
             - name: DATABASE_USER
