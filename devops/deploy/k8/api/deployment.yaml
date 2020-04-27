@@ -56,6 +56,9 @@ spec:
 
             - name: API_HOST
               value: http://localhost:8900
+#SET DEBUG TO TRUE FOR TESTING
+            - name: DEBUG
+              value: "True"
 
             - name: REDIS_HOST
               value: redis-service
