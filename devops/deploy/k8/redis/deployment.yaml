@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-deployment
+  name: redis
 spec:
   replicas: 1
   selector:
@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:latest
+          image: bitnami/redis:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 6379
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: yes
