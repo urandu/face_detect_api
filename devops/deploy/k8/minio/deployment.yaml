@@ -1,21 +1,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: postgres
+  name: minio
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: minio
   template:
     metadata:
       labels:
-        app: postgres
+        app: minio
         tier: backend
     spec:
       containers:
-        - name: postgres
-          image: postgres:11.4
+        - name: minio
+          image: minio/minio
+          command: ["server", " /data"]
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -35,13 +36,20 @@ spec:
                   name: postgres-credentials
                   key: db_name
 
+
+
+                  MINIO_STORAGE_ENDPOINT=minio:9000
+                  MINIO_ACCESS_KEY=weak_password
+                  MINIO_SECRET_KEY=weak_password
+
+
           ports:
-            - containerPort: 5432
+            - containerPort: 9000
           volumeMounts:
-            - name: postgres-volume-mount
+            - name: minio-volume-mount
               mountPath: /var/lib/postgresql/data
 
       volumes:
-        - name: postgres-volume-mount
+        - name: minio-volume-mount
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: minio-pvc
