@@ -1,4 +1,5 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/380feac518441fb3b9ff/maintainability)](https://codeclimate.com/github/urandu/face_detect_api/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/380feac518441fb3b9ff/maintainability)](https://codeclimate.com/github/urandu/face_detect_api/maintainability) ![Docker build and push](https://github.com/urandu/face_detect_api/workflows/Docker%20build%20and%20push/badge.svg?branch=master)
+
 # Face Detect API
 This is a simple face detection api that takes as input, an image and gives as output, detected faces on the image. This API can be used as an alternative to the paid face detection APIs currently available as it gives quite good accuracy levels.
 the technologies used include: 
