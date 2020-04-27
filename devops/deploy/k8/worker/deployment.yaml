@@ -19,19 +19,19 @@ spec:
           image: urandu/face-detection-api:latest
           command: ["celery", "worker", "--app=api.celery_app", "--concurrency=2", "--hostname=worker@%h", "--loglevel=INFO"]
           env:
-            - name: POSTGRES_USER
+            - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: user
 
-            - name: POSTGRES_PASSWORD
+            - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: password
 
-            - name: POSTGRES_DB
+            - name: DATABASE_NAME
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
@@ -42,6 +42,15 @@ spec:
                 secretKeyRef:
                   name: postgres-credentials
                   key: db_host
+
+            - name: CELERY_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: host
+
+            - name: CELERY_RESULT_BACKEND
+              value: redis://redis-service:6379
 
             - name: REDIS_HOST
               value: redis-service
