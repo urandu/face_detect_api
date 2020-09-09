@@ -58,6 +58,6 @@ services:
         command: server /data
         env_file: *envfile
         ports:
-            - "9000"
+            - "9000:9000"
         volumes:
             - ./storage/minio:/data
