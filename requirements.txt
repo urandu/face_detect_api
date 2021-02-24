@@ -16,7 +16,7 @@ h5py==2.10.0
 idna==2.8
 importlib-metadata==0.23
 Keras-Applications==1.0.8
-Keras-Preprocessing==1.1.0
+Keras-Preprocessing==1.1.2
 kombu==4.6.4
 Markdown==3.1.1
 minio==4.0.21
