@@ -20,6 +20,21 @@ jobs:
       run: |
         docker build . -t urandu/face-detection-api:$GITHUB_SHA
     
-    - name: docker push
+    - name: docker push - dockerhub
       run: |
         docker push urandu/face-detection-api:$GITHUB_SHA
+    - name: docker login - urandu registry
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login urandu-local-docker-registry.loca.lt/facedetect_api -u ${{secrets.URANDU_DOCKER_REGISTRY_USERNAME}} -p ${{secrets.URANDU_DOCKER_REGISTRY_PASSWORD}}
+        
+    - name: udate image tag
+      run: |
+        docker tag urandu/face-detection-api:$GITHUB_SHA urandu-local-docker-registry.loca.lt/facedetect_api/facedetect_api:$GITHUB_SHA
+
+    - name: docker push - urandu registry
+      run: |
+        docker push urandu-local-docker-registry.loca.lt/facedetect_api/facedetect_api:$GITHUB_SHA
+
