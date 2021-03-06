@@ -28,11 +28,11 @@ jobs:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}   
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
       run: |
-        docker login urandu-local-docker-registry.loca.lt/facedetect_api -u ${{secrets.URANDU_DOCKER_REGISTRY_USERNAME}} -p ${{secrets.URANDU_DOCKER_REGISTRY_PASSWORD}}
+        docker login helpless-deer-17.loca.lt/facedetect_api -u ${{secrets.URANDU_DOCKER_REGISTRY_USERNAME}} -p ${{secrets.URANDU_DOCKER_REGISTRY_PASSWORD}}
         
     - name: udate image tag
       run: |
-        docker tag urandu/face-detection-api:$GITHUB_SHA urandu-local-docker-registry.loca.lt/facedetect_api/facedetect_api:$GITHUB_SHA
+        docker tag urandu/face-detection-api:$GITHUB_SHA helpless-deer-17.loca.lt/facedetect_api/facedetect_api:$GITHUB_SHA
 
     - name: docker push - urandu registry
       run: |
