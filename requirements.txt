@@ -4,7 +4,7 @@ astor==0.8.1
 astunparse==1.6.3
 billiard==3.5.0.5
 cachetools==4.2.1
-celery==4.2.0
+celery==5.2.2
 certifi==2019.9.11
 chardet==3.0.4
 coreapi==2.3.3
