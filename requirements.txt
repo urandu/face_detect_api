@@ -33,7 +33,7 @@ MarkupSafe==1.1.1
 minio==4.0.21
 more-itertools==7.2.0
 mtcnn==0.0.9
-numpy==1.19.5
+numpy==1.22.0
 oauthlib==3.1.0
 opencv-python==4.1.1.26
 opt-einsum==3.3.0
