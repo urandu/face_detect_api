@@ -38,7 +38,7 @@ oauthlib==3.1.0
 opencv-python==4.2.0.32
 opt-einsum==3.3.0
 packaging==19.2
-Pillow==8.2.0
+Pillow==9.0.1
 protobuf==3.15.3
 psycopg2-binary==2.8.3
 pyasn1==0.4.8
