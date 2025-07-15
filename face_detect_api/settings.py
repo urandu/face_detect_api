@@ -136,14 +136,14 @@ STATIC_URL = '/static/'
 
 
 
-CELERY = {
-    'broker_url': os.getenv('CELERY_BROKER'),
-    'imports': ('api.tasks', ),
-    'task_serializer': 'json',
-    'result_backend': os.getenv('CELERY_RESULT_BACKEND'),
-    'result_serializer': 'json',
-    'accept_content': ['json'],
-}
+# Celery Configuration
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TIMEZONE = 'UTC'
+CELERY_IMPORTS = ('api.tasks',)
 
 STORAGES = {
     "default": {
