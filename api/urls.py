@@ -1,7 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 
-from api.views import Image
+from api.views import Image, HealthCheck
 
 urlpatterns = [
-    url(r'^image/$', Image.as_view(), name='Image'),
+    path('image/', Image.as_view(), name='Image'),
+    path('health/', HealthCheck.as_view(), name='HealthCheck'),
 ]

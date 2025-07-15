@@ -1,34 +1,70 @@
+# Face Detect API
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/380feac518441fb3b9ff/maintainability)](https://codeclimate.com/github/urandu/face_detect_api/maintainability) ![Docker build and push](https://github.com/urandu/face_detect_api/workflows/Docker%20build%20and%20push/badge.svg?branch=master)
 
-# Face Detect API
-This is a simple face detection api that takes as input, an image and gives as output, detected faces on the image. This API can be used as an alternative to the paid face detection APIs currently available as it gives quite good accuracy levels.
-the technologies used include: 
-- Django
-- Docker
-- TensorFlow with MTCNN model
-- Minio
-- PostgreSQL
-- RabbitMQ
-- Redis
-- Celery
+This is a production-ready face detection API that takes an image as input and returns detected faces with high accuracy. Built with modern technologies and upgraded to the latest versions for better performance and security.
+
+## 🚀 Recent Updates
+- **Django 5.0.7** - Upgraded from Django 2.2.28 for better performance and security
+- **Python 3.11** - Updated runtime for improved performance
+- **Modern Dependencies** - All packages updated to latest compatible versions
+- **Enhanced Security** - Latest security patches and improvements
+
+## 🛠️ Technologies Used
+- **Django 5.0.7** - Web framework
+- **Django REST Framework 3.15.1** - API framework
+- **TensorFlow 2.16.2** with MTCNN model - Face detection
+- **Celery 5.3.4** - Asynchronous task processing
+- **PostgreSQL** - Database
+- **MinIO** - Object storage
+- **RabbitMQ** - Message broker
+- **Redis** - Task result backend
+- **Docker** - Containerization
 
 ## Architecture
 
-The architecture used is a micro-service architecture with asynchronous processing of requests.
-The diagram below highlights the architecture used;
+The architecture uses a microservice design with asynchronous processing for scalability and performance.
 
 ![alt text](./docs/face_detect_api.png "Architectural diagram")
 
-## Local Deployment
+## 📋 Requirements
 
-To deploy the API locally, run the following commands
-- Clone this repo `git clone https://github.com/urandu/face_detect_api.git`
-- `cd face_detect_api`
-- Run `docker-compose up `
-- Wait for the necessary docker images to be pulled and started
-- On a different terminal, run `docker-compose run api python manage.py makemigrations`
-- Then run `docker-compose run api python manage.py migrate`
-- (Optional) create superuser by running `docker-compose run api python manage.py createsuperuser` you will be prompted for a username, email and password. these are the admin credentials for django admin
+- **Python**: 3.8+ (recommended: 3.11)
+- **Docker** and **Docker Compose**
+- **PostgreSQL**: 11+
+- **Redis**: 5+
+- **RabbitMQ**: 3.6+
+
+## 🚀 Quick Start
+
+### Local Deployment
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/urandu/face_detect_api.git
+   cd face_detect_api
+   ```
+
+2. **Start services with Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Run database migrations**
+   ```bash
+   docker-compose run api python manage.py makemigrations
+   docker-compose run api python manage.py migrate
+   ```
+
+4. **Create admin user (optional)**
+   ```bash
+   docker-compose run api python manage.py createsuperuser
+   ```
+
+5. **Validate the upgrade (if upgrading from older version)**
+   ```bash
+   ./validate_upgrade.sh
+   ```
 
 - To test our API, we shall send a post request to the endpoint `http://localhost:8900/api/image/`
 
@@ -96,14 +132,99 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
     ],
     "output_image_url": "localhost:8900/api/image/?image_id=0a5a49c6-18dc-4b3a-b984-70476280aa13"
 }
-
 ```
 
+## 📷 Example Results
 
-Below is an example image we used: 
-##### input image
-![alt text](./docs/299510_286698748013512_621328646_n.jpg "Architectural diagram")
-##### output image
-![alt text](./docs/detected_faces_5003585c-9ca5-42f5-81d0-87193740e0a6.jpg "Architectural diagram")
+### Input Image
+![Input image](./docs/299510_286698748013512_621328646_n.jpg "Input image")
 
-Please take a look at [this medium article](https://medium.com/@urandu/build-a-production-ready-face-detection-api-part-1-c56cbe9592bf "Build a Production Ready Face Detection API") on how we developed the API 
+### Output Image
+![Output image with detected faces](./docs/detected_faces_5003585c-9ca5-42f5-81d0-87193740e0a6.jpg "Output image with detected faces")
+
+## 📚 Documentation
+
+- **[Django 5.0 Upgrade Guide](./DJANGO_UPGRADE_GUIDE.md)** - Detailed upgrade documentation
+- **[API Documentation](http://localhost:8900/swagger/)** - Swagger/OpenAPI docs (when running)
+- **[Medium Article](https://medium.com/@urandu/build-a-production-ready-face-detection-api-part-1-c56cbe9592bf)** - Development deep dive
+
+## 🔧 Development
+
+### Upgrading from Previous Versions
+
+If you're upgrading from Django 2.2, see the **[Django 5.0 Upgrade Guide](./DJANGO_UPGRADE_GUIDE.md)** for detailed instructions.
+
+### Running Tests
+
+```bash
+docker-compose run api python manage.py test
+```
+
+### Development Setup
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run development server
+python manage.py runserver
+
+# Run Celery worker
+celery -A api.celery_app worker --loglevel=info
+```
+
+## 🚀 Production Deployment
+
+### Quick Production Deployment
+
+1. **Copy and configure environment**
+   ```bash
+   cp .env.prod.template .env
+   # Edit .env with your production values
+   ```
+
+2. **Deploy with the deployment script**
+   ```bash
+   ./deploy.sh --build
+   ```
+
+3. **Check deployment status**
+   ```bash
+   ./deploy.sh --status
+   ```
+
+### Manual Production Deployment
+
+```bash
+# Deploy to production
+docker-compose -f docker-compose.prod.yml up -d --build
+
+# Run migrations
+docker-compose -f docker-compose.prod.yml exec api python manage.py migrate
+
+# Create admin user
+docker-compose -f docker-compose.prod.yml exec api python manage.py createsuperuser
+
+# Check status
+docker-compose -f docker-compose.prod.yml ps
+```
+
+### Production Features
+
+- **Multi-stage Docker builds** for optimized images
+- **Nginx reverse proxy** with SSL support
+- **Health checks** for all services
+- **Security hardening** (non-root containers, security headers)
+- **Rate limiting** and request size limits
+- **Automated service dependencies** and health monitoring
+- **Horizontal scaling** support
+
+For detailed production deployment instructions, see **[PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md)**.
+
+### Kubernetes Deployment
+
+The application also includes Kubernetes manifests in `devops/deploy/k8/` for production deployment.
+
+## 📄 License
+
+This project is licensed under the LGPL-3.0 License.

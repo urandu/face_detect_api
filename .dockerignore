@@ -137,4 +137,23 @@ ENV
 /db_data/
 /storage/
 
+# Production-specific ignores
+.env
+.env.*
+!.env.prod.template
+docker-compose.yaml
+docker-compose.override.yml
+docs/
+devops/
+certs/*.pem
+certs/*.crt
+certs/*.key
+*.md
+!README.md
+.coverage
+htmlcov/
+.pytest_cache/
+staticfiles/
+media/
+
 

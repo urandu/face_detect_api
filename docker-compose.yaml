@@ -1,12 +1,13 @@
-version: '3'
+version: '3.8'
 services:
 
   database:
-      image: postgres:11.4
+      image: postgres:15-alpine
       volumes:
           - ./db_data/pgdata:/var/lib/postgresql/data/
       environment:
           POSTGRES_USER: django
+          POSTGRES_DB: django
           POSTGRES_HOST_AUTH_METHOD: "trust"
       ports:
         - "5432"
@@ -26,27 +27,25 @@ services:
         - database
 
   broker:
-      image: rabbitmq:3.6.16-management-alpine
+      image: rabbitmq:3.12-management-alpine
       env_file: *envfile
       ports:
-        - 5672
-        - 15672
-        - 5671
+        - "5672:5672"
+        - "15672:15672"
+        - "5671:5671"
 
   redis:
-      image: 'bitnami/redis:latest'
+      image: 'redis:7-alpine'
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
       ports:
-        - "6379"
+        - "6379:6379"
 
   worker:
-      image: urandu/face-detection-api:a0fbc99c1862c39997e43252b1bac21ef6cfad00
+      build: .
       command: ./bin/worker_entrypoint.sh
       volumes:
           - ./:/django
-      links:
-          - database
       env_file: *envfile
       depends_on:
         - broker
@@ -54,10 +53,11 @@ services:
         - database
 
   minio:
-        image: "minio/minio"
-        command: server /data
+        image: "minio/minio:latest"
+        command: server /data --console-address ":9001"
         env_file: *envfile
         ports:
             - "9000:9000"
+            - "9001:9001"
         volumes:
             - ./storage/minio:/data

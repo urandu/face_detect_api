@@ -9,12 +9,14 @@ from api.serializers.image_serializer import ImageSerializer
 from api.tasks.image import detect_faces, detect_faces_callback
 import os
 from minio import Minio
-from minio.error import ResponseError
+from minio.error import S3Error
 from django.conf import settings
 from celery import chain
 import magic
 from django.http import HttpResponse
 from PIL import Image as PImage
+from django.db import connection
+from django.core.cache import cache
 
 
 
@@ -27,7 +29,7 @@ def upload_image(request, image_id):
                         secure=False)
     try:
         minioClient.bucket_exists(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME)
-    except ResponseError as err:
+    except S3Error as err:
         # log then create bucket
         minioClient.make_bucket(settings.MINIO_STORAGE_MEDIA_BUCKET_NAME)
 
@@ -65,19 +67,52 @@ class Image(APIView):
                 return Response({'`image` is required'}, status=status.HTTP_400_BAD_REQUEST)
             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self,request):
+    def get(self, request):
         if request.GET.get("image_id"):
             image_id = request.GET.get("image_id")
-            image_object = Image_object.objects.get(image_id=image_id)
+            try:
+                image_object = Image_object.objects.get(image_id=image_id)
+                filename = "detected_faces/" + image_object.name
 
-            filename = "detected_faces/" + image_object.name
+                image = default_storage.open(filename).read()
 
-            image = default_storage.open(filename).read()
+                content_type = magic.from_buffer(image, mime=True)
+                response = HttpResponse(image, content_type=content_type)
+                response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+                return response
+            except Image_object.DoesNotExist:
+                return Response({"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                return Response({"error": "Failed to retrieve image"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({"error": "image_id parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-            content_type = magic.from_buffer(image, mime=True)
-            response = HttpResponse(image, content_type=content_type)
-            response['Content-Disposition'] = 'attachment; filename="%s"' % filename
-            return response
-
-            # return Response({"status": request.GET.get("image_id")},   status=status.HTTP_200_OK)
-        pass
+class HealthCheck(APIView):
+    """
+    Health check endpoint for production monitoring
+    """
+    def get(self, request):
+        try:
+            # Check database connection
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+            
+            # Check cache connection
+            cache.set('health_check', 'ok', 10)
+            cache_status = cache.get('health_check')
+            
+            if cache_status != 'ok':
+                raise Exception("Cache not working")
+            
+            return Response({
+                "status": "healthy",
+                "database": "ok",
+                "cache": "ok"
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                "status": "unhealthy",
+                "error": str(e)
+            }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
