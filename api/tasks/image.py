@@ -16,6 +16,10 @@ import io
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
 
+# Face detection configuration
+FACE_CONFIDENCE_THRESHOLD = 0.94
+IOU_THRESHOLD = 0.5
+
 
 def transform_box_coordinates(box, keypoints, angle, image_width, image_height):
     """
@@ -105,7 +109,7 @@ def detect_faces(self, *args, **kwargs):
         
         # Transform coordinates back to original orientation
         for result in results:
-            if result['confidence'] > 0.94:
+            if result['confidence'] > FACE_CONFIDENCE_THRESHOLD:
                 # Transform box and keypoints back to original orientation
                 transformed_box, transformed_keypoints = transform_box_coordinates(
                     result['box'],
@@ -129,7 +133,8 @@ def detect_faces(self, *args, **kwargs):
     for result in all_results:
         # Check if this is a duplicate of an existing detection
         is_duplicate = False
-        for unique_result in unique_results:
+        duplicate_index = -1
+        for i, unique_result in enumerate(unique_results):
             # Calculate overlap between bounding boxes
             box1 = result['box']
             box2 = unique_result['box']
@@ -149,16 +154,21 @@ def detect_faces(self, *args, **kwargs):
             area2 = box2[2] * box2[3]
             union = area1 + area2 - intersection
             
-            # If IoU (Intersection over Union) > 0.5, consider as duplicate
-            if union > 0 and intersection / union > 0.5:
+            # If IoU (Intersection over Union) > threshold, consider as duplicate
+            if union > 0 and intersection / union > IOU_THRESHOLD:
                 is_duplicate = True
+                duplicate_index = i
                 # Keep the one with higher confidence
                 if result['confidence'] > unique_result['confidence']:
-                    unique_results.remove(unique_result)
-                    unique_results.append(result)
-                break
+                    break
+                else:
+                    # Current result has lower confidence, skip it
+                    break
         
-        if not is_duplicate:
+        if is_duplicate and duplicate_index >= 0 and result['confidence'] > unique_results[duplicate_index]['confidence']:
+            # Replace with higher confidence detection
+            unique_results[duplicate_index] = result
+        elif not is_duplicate:
             unique_results.append(result)
 
     detected_faces = list()
