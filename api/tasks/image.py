@@ -7,7 +7,7 @@ from mtcnn.mtcnn import MTCNN
 from numpy import asarray
 from api.models.face import Face
 from api.models.image import Image as Image_object
-from PIL import Image as PImage
+from PIL import Image as PImage, ImageOps
 from api.celery_app import app
 import numpy as np
 import json
@@ -17,34 +17,161 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
 
 
+def transform_box_coordinates(box, keypoints, angle, image_width, image_height):
+    """
+    Transform bounding box and keypoints coordinates back to original orientation.
+    
+    Args:
+        box: [x, y, width, height] in rotated image
+        keypoints: dict with 'left_eye', 'right_eye', 'nose', 'mouth_left', 'mouth_right'
+        angle: rotation angle (0, 90, 180, 270)
+        image_width: original image width
+        image_height: original image height
+    
+    Returns:
+        transformed box and keypoints
+    """
+    x, y, width, height = box
+    
+    if angle == 0:
+        return box, keypoints
+    elif angle == 90:
+        # 90 degrees clockwise: (x, y) -> (y, width - x - box_width)
+        new_x = y
+        new_y = image_width - x - width
+        new_width = height
+        new_height = width
+        new_keypoints = {}
+        for key, (kx, ky) in keypoints.items():
+            new_keypoints[key] = (ky, image_width - kx)
+        return [new_x, new_y, new_width, new_height], new_keypoints
+    elif angle == 180:
+        # 180 degrees: (x, y) -> (width - x - box_width, height - y - box_height)
+        new_x = image_width - x - width
+        new_y = image_height - y - height
+        new_keypoints = {}
+        for key, (kx, ky) in keypoints.items():
+            new_keypoints[key] = (image_width - kx, image_height - ky)
+        return [new_x, new_y, width, height], new_keypoints
+    elif angle == 270:
+        # 270 degrees clockwise: (x, y) -> (height - y - box_height, x)
+        new_x = image_height - y - height
+        new_y = x
+        new_width = height
+        new_height = width
+        new_keypoints = {}
+        for key, (kx, ky) in keypoints.items():
+            new_keypoints[key] = (image_height - ky, kx)
+        return [new_x, new_y, new_width, new_height], new_keypoints
+    
+    return box, keypoints
+
+
 @app.task(bind=True, name='detect_faces')
 def detect_faces(self, *args, **kwargs):
     image_id = kwargs.get("image_id")
     image_object = Image_object.objects.get(image_id=image_id)
     filename = image_object.name
     image = PImage.open(default_storage.open(filename))
+    
+    # Correct image orientation based on EXIF data
+    image = ImageOps.exif_transpose(image)
+    
     image = image.convert('RGB')
-    pixels = asarray(image)
-
+    
+    # Store original dimensions
+    original_width, original_height = image.size
+    
     detector = MTCNN()
+    
+    # Try different orientations to detect faces
+    rotations = [0, 90, 180, 270]
+    all_results = []
+    
+    for angle in rotations:
+        # Rotate image
+        if angle == 0:
+            rotated_image = image
+        else:
+            rotated_image = image.rotate(-angle, expand=True)
+        
+        pixels = asarray(rotated_image)
+        
+        # Get current image dimensions (may change after rotation)
+        current_width, current_height = rotated_image.size
+        
+        # detect faces in the rotated image
+        results = detector.detect_faces(pixels)
+        
+        # Transform coordinates back to original orientation
+        for result in results:
+            if result['confidence'] > 0.94:
+                # Transform box and keypoints back to original orientation
+                transformed_box, transformed_keypoints = transform_box_coordinates(
+                    result['box'],
+                    result['keypoints'],
+                    angle,
+                    original_width,
+                    original_height
+                )
+                
+                # Add to results with transformed coordinates
+                all_results.append({
+                    'box': transformed_box,
+                    'keypoints': transformed_keypoints,
+                    'confidence': result['confidence'],
+                    'angle': angle
+                })
 
-    # detect faces in the image
-    results = detector.detect_faces(pixels)
+    # Remove duplicate detections (faces detected in multiple orientations)
+    # Keep the one with highest confidence
+    unique_results = []
+    for result in all_results:
+        # Check if this is a duplicate of an existing detection
+        is_duplicate = False
+        for unique_result in unique_results:
+            # Calculate overlap between bounding boxes
+            box1 = result['box']
+            box2 = unique_result['box']
+            
+            x1_min, y1_min = box1[0], box1[1]
+            x1_max, y1_max = x1_min + box1[2], y1_min + box1[3]
+            x2_min, y2_min = box2[0], box2[1]
+            x2_max, y2_max = x2_min + box2[2], y2_min + box2[3]
+            
+            # Calculate intersection
+            x_overlap = max(0, min(x1_max, x2_max) - max(x1_min, x2_min))
+            y_overlap = max(0, min(y1_max, y2_max) - max(y1_min, y2_min))
+            intersection = x_overlap * y_overlap
+            
+            # Calculate union
+            area1 = box1[2] * box1[3]
+            area2 = box2[2] * box2[3]
+            union = area1 + area2 - intersection
+            
+            # If IoU (Intersection over Union) > 0.5, consider as duplicate
+            if union > 0 and intersection / union > 0.5:
+                is_duplicate = True
+                # Keep the one with higher confidence
+                if result['confidence'] > unique_result['confidence']:
+                    unique_results.remove(unique_result)
+                    unique_results.append(result)
+                break
+        
+        if not is_duplicate:
+            unique_results.append(result)
 
     detected_faces = list()
-    for result in results:
-
-        # only detect faces with a confidence of 94% and above
-        if result['confidence'] > 0.94:
-            face_object = Face()
-            face_id = str(uuid.uuid4())
-            face_object.face_id = face_id
-            face_object.image_id = image_id
-            face_object.confidence = result['confidence']
-            face_object.box = result['box']
-            face_object.keypoints = result['keypoints']
-            face_object.save()
-            detected_faces.append(face_id)
+    for result in unique_results:
+        face_object = Face()
+        face_id = str(uuid.uuid4())
+        face_object.face_id = face_id
+        face_object.image_id = image_id
+        face_object.confidence = result['confidence']
+        face_object.box = result['box']
+        face_object.keypoints = result['keypoints']
+        face_object.save()
+        detected_faces.append(face_id)
 
     return detected_faces
 
@@ -59,6 +186,10 @@ def detect_faces_callback(self, *args, **kwargs):
     output_filename = "detected_faces/" + image_object.name
     faces_on_image = Face.objects.filter(image_id=image_id)
     image = PImage.open(default_storage.open(filename))
+    
+    # Correct image orientation based on EXIF data
+    image = ImageOps.exif_transpose(image)
+    
     image = np.array(image)
     image = image.copy()
     faces_dict = list()
