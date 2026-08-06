@@ -72,6 +72,7 @@ The architecture uses a microservice design with asynchronous processing for sca
 curl -i -X POST -H "Content-Type: multipart/form-data" 
 -F "request_id=12345" -F "callback_url=<replace with requestbin.com endpoint>" -F "image=<path to image>" http://localhost:8900/api/image/
 
+> Note: requestbin.com may be unreliable. https://webhook.site is a good alternative for testing callback_url locally.
 ```
 - callback response
 ```
