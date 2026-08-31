@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 ENV LANG C.UTF-8
 
-MAINTAINER bildad namawa "bildadnamawa@gmail.com"
+LABEL bildad namawa "bildadnamawa@gmail.com"
 
 RUN mkdir /django
 
@@ -11,7 +11,7 @@ RUN apt-get -y update && apt-get install -y \
     python3-dev \
     build-essential \
     libmagic1 \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
